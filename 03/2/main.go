@@ -10,6 +10,9 @@ import (
 )
 
 const batteryCount = 12
+const inputTxt = "input.txt"
+
+// const inputTxt = "input_test.txt"
 
 func main() {
 	startTime := time.Now()
@@ -18,7 +21,7 @@ func main() {
 		log.Printf("Execution time: %s", elapsed)
 	}()
 
-	file, err := os.Open("input.txt")
+	file, err := os.Open(inputTxt)
 	if err != nil {
 		log.Fatal(err)
 	}
