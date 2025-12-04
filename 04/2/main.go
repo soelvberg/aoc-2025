@@ -45,7 +45,6 @@ func main() {
 	countIterations := 0
 	countRemovedRolls := 1
 	for countRemovedRolls > 0 {
-		// matrix := copyMatrix(nextMatrix)
 		countRemovedRolls = traverseMatrix(nextMatrix)
 		countIterations++
 	}
@@ -60,9 +59,9 @@ func traverseMatrix(matrix [][]rune) int {
 		for x := 0; x < len(matrix[y]); x++ {
 			// _ = matrix[y][x]
 			if isRoll(x, y, matrix) {
-				numRolls := checkAdjacentNumRolls(x, y, matrix)
+				isAccessible := checkIsAccessible(x, y, matrix)
 				// fmt.Printf("(%d, %d): %c - %d adjacent @\n", x, y, matrix[y][x], numRolls)
-				if numRolls < 4 {
+				if isAccessible {
 					countAccessibleRolls++
 					countRemovedRolls++
 					nextMatrix[y][x] = '.'
@@ -78,23 +77,27 @@ func traverseMatrix(matrix [][]rune) int {
 	return countRemovedRolls
 }
 
-func checkAdjacentNumRolls(x, y int, matrix [][]rune) int {
+func checkIsAccessible(x, y int, matrix [][]rune) bool {
 	numRolls := 0
 	directions := [8][2]int{
 		{-1, -1}, {0, -1}, {1, -1},
 		{-1, 0}, {1, 0},
 		{-1, 1}, {0, 1}, {1, 1},
 	}
-	for _, dir := range directions {
-		newX := x + dir[0]
-		newY := y + dir[1]
+	for _, d := range directions {
+		newX := x + d[0]
+		newY := y + d[1]
 		if newY >= 0 && newY < len(matrix) && newX >= 0 && newX < len(matrix[newY]) {
 			if matrix[newY][newX] == '@' {
 				numRolls++
 			}
 		}
+
+		if numRolls > 3 {
+			break
+		}
 	}
-	return numRolls
+	return numRolls < 4
 }
 
 func isRoll(x, y int, matrix [][]rune) bool {
