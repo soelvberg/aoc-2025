@@ -33,7 +33,7 @@ func createPolygon(points []Point) Polygon {
 
 	for i := range n {
 		a := points[i]
-		b := points[(i+1)%n] // wrap around to the first point
+		b := points[(i+1)%n] // back to start
 
 		lines = append(lines, Line{A: a, B: b})
 	}
@@ -47,7 +47,7 @@ func createPolygon(points []Point) Polygon {
 func pip(point Point) bool {
 	inside := false
 
-	// check point on edge - Horizontal lines
+	// check point on edge - horizontals
 	for _, line := range horizontals {
 		if point.Y == line.A.Y &&
 			point.X >= min(line.A.X, line.B.X) && point.X <= max(line.A.X, line.B.X) {
@@ -55,7 +55,7 @@ func pip(point Point) bool {
 		}
 	}
 
-	// check point on edge - Vertical lines
+	// check point on edge - verticals
 	for _, line := range verticals {
 		if point.X == line.A.X &&
 			point.Y >= min(line.A.Y, line.B.Y) && point.Y <= max(line.A.Y, line.B.Y) {
@@ -66,7 +66,7 @@ func pip(point Point) bool {
 	// ray-cast intersect vertical lines (ray is horizontal)
 	for _, line := range verticals {
 		if point.X < line.A.X && point.Y >= min(line.A.Y, line.B.Y) && point.Y < max(line.A.Y, line.B.Y) {
-			inside = !inside
+			inside = !inside // toggle
 		}
 	}
 
