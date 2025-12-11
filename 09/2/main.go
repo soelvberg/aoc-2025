@@ -63,9 +63,17 @@ func pip(point Point) bool {
 		}
 	}
 
-	// ray-cast intersect vertical lines (ray is horizontal)
+	// ray-cast intersect vertical lines (ray is horizontal, right direction)
 	for _, v := range verticals {
-		if point.X < v.A.X && point.Y >= min(v.A.Y, v.B.Y) && point.Y < max(v.A.Y, v.B.Y) {
+		rayStartX := point.X
+		rayStartY := point.Y
+		// rayEndX := 999999999
+
+		vX := v.A.X
+		vMinY := min(v.A.Y, v.B.Y)
+		vMaxY := max(v.A.Y, v.B.Y)
+
+		if rayStartX < vX && rayStartY > vMinY && rayStartY < vMaxY {
 			inside = !inside // toggle
 		}
 	}
